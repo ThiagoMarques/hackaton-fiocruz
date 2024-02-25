@@ -11,24 +11,28 @@ import {
 } from '@firebase/auth';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { updateProfile } from 'firebase/auth';
+// import { getAnalytics } from 'firebase/analytics';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBqMRR_AJj0HjOpf57wCNLaCcdIH7I3z7k',
-  authDomain: 'regularium-app.firebaseapp.com',
-  projectId: 'regularium-app',
-  storageBucket: 'regularium-app.appspot.com',
-  messagingSenderId: '131805928281',
-  appId: '1:131805928281:web:bdeb188c92c8cc84578a48',
-  measurementId: 'G-73X8CQH64S',
+  apiKey: 'AIzaSyBtvSwOaYtT5jV8bveev-TGc0sUB63pWj4',
+  authDomain: 'acalma-sus.firebaseapp.com',
+  projectId: 'acalma-sus',
+  storageBucket: 'acalma-sus.appspot.com',
+  messagingSenderId: '42786548078',
+  appId: '1:42786548078:web:5620a45bf35bee80ecb97f',
+  measurementId: 'G-FKDN1788XC',
 };
 
 interface ICredentials {
   email: string;
   password: string;
+  name?: string;
 }
 interface IAuthContext {
   user: any;
   signIn(credentials: ICredentials): void;
+  signUp(credentials: ICredentials): void;
   signOutApp(): void;
   forgotPassword(email: any): void;
 }
@@ -48,6 +52,7 @@ export const AuthContext = React.createContext<IAuthContext>(
 export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
   const [user, setUser] = useState(null);
   const app = initializeApp(firebaseConfig);
+  // const analytics = getAnalytics(app);
   const auth = getAuth(app);
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
@@ -63,6 +68,19 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
     try {
       console.log('User logged in!');
       await signInWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      Alert.alert(
+        'Erro na autenticação',
+        'Ocorreu um erro ao fazer login, verifique as credenciais.',
+      );
+      console.error('Authentication error:', error.message);
+    }
+  };
+
+  const signUp = async ({ email, password }: ICredentials) => {
+    try {
+      console.log('Chamou método....');
+      await createUserWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       Alert.alert(
         'Erro na autenticação',
@@ -100,7 +118,9 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOutApp, forgotPassword }}>
+    <AuthContext.Provider
+      value={{ user, signIn, signUp, signOutApp, forgotPassword }}
+    >
       {children}
     </AuthContext.Provider>
   );

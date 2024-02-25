@@ -22,28 +22,10 @@ import { Logo } from '../SignIn/styles';
 import { InputControl } from '../../components/Form/InputControl';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  updateProfile,
-  signOut,
-} from '@firebase/auth';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyBqMRR_AJj0HjOpf57wCNLaCcdIH7I3z7k',
-  authDomain: 'regularium-app.firebaseapp.com',
-  projectId: 'regularium-app',
-  storageBucket: 'regularium-app.appspot.com',
-  messagingSenderId: '131805928281',
-  appId: '1:131805928281:web:bdeb188c92c8cc84578a48',
-  measurementId: 'G-73X8CQH64S',
-};
+import { useAuth } from '../../context/AuthContext';
 
 interface ScreenNavigationProp {
   navigate: (screen: string) => void;
@@ -60,9 +42,8 @@ const formSchema = yup.object({
 
 export const SignUp: React.FunctionComponent = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
-  const [user, setUser] = useState(null); // Track user authentication state
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+  const [user, setUser] = useState(null);
+  const authContext = useAuth();
   const {
     handleSubmit,
     control,
@@ -71,35 +52,15 @@ export const SignUp: React.FunctionComponent = () => {
     resolver: yupResolver(formSchema),
   });
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
-      setUser(user);
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
-
   const handleSignUp = async (form: IFormInputs) => {
     const data = {
       name: form.name,
       email: form.email,
       password: form.password,
     };
-    console.log('data', data);
     try {
-      if (user) {
-        console.log('User logged out successfully!');
-        await signOut(auth);
-      } else {
-        await createUserWithEmailAndPassword(
-          auth,
-          data.email,
-          data.password,
-        ).then(userCred => {
-          updateProfile(userCred.user, { displayName: data.name });
-        });
-        await signOut(auth);
-      }
+      authContext.signUp(data);
+      console.log('Usuário criado!');
     } catch (error: any) {
       Alert.alert(
         'Erro ao criar usuário',

@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { Home } from '../pages/Home';
 import { Config } from '../pages/Config';
+import { Treinos } from '../pages/Treinos';
 
 const App = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,6 +27,16 @@ function MyTabs() {
         component={Home}
       />
       <Tab.Screen
+        name="Treinos"
+        options={{
+          tabBarLabel: 'Treinos',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list" color={color} size={size} />
+          ),
+        }}
+        component={Treinos}
+      />
+      <Tab.Screen
         name="Config"
         options={{
           tabBarLabel: 'Config',
@@ -43,6 +54,7 @@ export const AppRoutes: React.FunctionComponent = () => {
   return (
     <App.Navigator screenOptions={{ headerShown: false }}>
       <App.Screen name="Tabs" component={MyTabs} />
+      <App.Screen name="Treinos" component={Treinos} />
       <App.Screen name="Register" component={Register} />
     </App.Navigator>
   );
