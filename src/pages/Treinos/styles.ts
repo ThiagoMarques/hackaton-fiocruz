@@ -28,26 +28,22 @@ export const ImageHeaderTraining = styled.Image`
 `;
 
 export const TrainingText = styled.Text`
-  color: ${({ theme }) => theme.colors.gray800};
+  color: ${({ theme }) => theme.colors.light};
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
 `;
 
-
 export const TrainingView = styled.View`
-  height: 96;
-  padding: 0 24px;
-  flex-direction: 'row';
-  align-items: 'center';
-  background-color: ${({ theme }) => theme.colors.primary};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
-
 
 export const CardUserButton = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   height: ${RFPercentage(12)}px;
-  width: 80%;
+  width: 90%;
   background-color: ${({ theme }) => theme.colors.bg};
   justify-content: center;
   align-items: center;
@@ -58,6 +54,13 @@ export const CardUserButton = styled.TouchableOpacity`
   border-radius: 20px;
 `;
 
+export const CardUserButtonTitle = styled.Text`
+  font-size: ${RFValue(14)}px;
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.blue800};
+  padding-left: 12px;
+`;
 
 
 

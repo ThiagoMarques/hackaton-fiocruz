@@ -1,0 +1,50 @@
+import React from 'react';
+import {
+  Container,
+  ContainerInstructions,
+  InstructionsButton,
+  InstructionsButtonTitle,
+  InstructionsTitle,
+} from './styles';
+
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { Alert } from 'react-native';
+// import { useAuth } from '../../context/AuthContext';
+// import { useNavigation } from '@react-navigation/native';
+
+interface ScreenNavigationProp {
+  navigate: (screen: string) => void;
+}
+
+export const Instrucoes: React.FunctionComponent = () => {
+  // const authContext = useAuth();
+  const { navigate } = useNavigation<ScreenNavigationProp>();
+
+  const handleInstructionView = async () => {
+    try {
+      navigate('TreinoDetalhado');
+    } catch (error: any) {
+      Alert.alert(
+        'Erro ao iniciar treino',
+        'Ocorreu um erro ao carregar a tela',
+      );
+      console.error('Authentication error:', error.message);
+    }
+  };
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Container>
+        <ContainerInstructions>
+          <InstructionsTitle>
+            Opte por headphones para melhor captação do som
+          </InstructionsTitle>
+        </ContainerInstructions>
+        <InstructionsButton onPress={() => handleInstructionView()}>
+          <InstructionsButtonTitle>Pular instruções</InstructionsButtonTitle>
+        </InstructionsButton>
+      </Container>
+    </SafeAreaView>
+  );
+};

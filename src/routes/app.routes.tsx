@@ -6,6 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { Home } from '../pages/Home';
 import { Config } from '../pages/Config';
 import { Treinos } from '../pages/Treinos';
+import { TreinoDetalhado } from '../pages/TreinoDetalhado';
+import { Instrucoes } from '../pages/Instrucoes';
 
 const App = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,6 +58,8 @@ export const AppRoutes: React.FunctionComponent = () => {
       <App.Screen name="Tabs" component={MyTabs} />
       <App.Screen name="Treinos" component={Treinos} />
       <App.Screen name="Register" component={Register} />
+      <App.Screen name="TreinoDetalhado" component={TreinoDetalhado} />
+      <App.Screen name="Instrucoes" component={Instrucoes} />
     </App.Navigator>
   );
 };

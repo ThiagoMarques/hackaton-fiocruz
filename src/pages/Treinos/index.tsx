@@ -1,32 +1,40 @@
 import React from 'react';
 import {
   CardUserButton,
+  CardUserButtonTitle,
   Container,
   Header,
   Icon,
   ImageHeaderTraining,
   TrainingText,
   TrainingTouchableOpacity,
+  TrainingView,
 } from './styles';
 
 import { arrowLeft, arrowRight } from '../../assets/icons/Icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert, View } from 'react-native';
+import { Alert } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigation } from '@react-navigation/native';
+
+interface ScreenNavigationProp {
+  navigate: (screen: string) => void;
+}
 
 export const Treinos: React.FunctionComponent = () => {
   const authContext = useAuth();
   const defaultProgram = 'ansiedade';
+  const { navigate } = useNavigation<ScreenNavigationProp>();
 
-  console.log('INICIOU... &&&&&&&&&&&');
   const handleProgram = async () => {
     try {
       console.log('Clicou');
       await authContext.getPrograms(defaultProgram);
+      navigate('TreinoDetalhado');
     } catch (error: any) {
       Alert.alert(
-        'Erro ao criar usuário',
-        'Ocorreu um erro ao criar seu usuário, verifique os dados inseridos.',
+        'Erro ao buscar programas',
+        'Ocorreu um erro ao carregar os dados do programa',
       );
       console.error('Authentication error:', error.message);
     }
@@ -39,17 +47,16 @@ export const Treinos: React.FunctionComponent = () => {
           <TrainingTouchableOpacity>
             <ImageHeaderTraining resizeMode="contain" source={arrowLeft} />
           </TrainingTouchableOpacity>
-          <TrainingText>{'Teste'}</TrainingText>
+          <TrainingText>{'Ansiedade'}</TrainingText>
           <TrainingTouchableOpacity>
             <ImageHeaderTraining resizeMode="contain" source={arrowRight} />
           </TrainingTouchableOpacity>
         </Header>
-        <View>
+        <TrainingView>
           <CardUserButton onPress={() => handleProgram()}>
-            <Icon name="mail" />
-            {/* <CardUserButtonTitle>Carta do seu profissional de saúde</CardUserButtonTitle> */}
+            <CardUserButtonTitle>Ansiedade</CardUserButtonTitle>
           </CardUserButton>
-        </View>
+        </TrainingView>
       </Container>
     </SafeAreaView>
   );
