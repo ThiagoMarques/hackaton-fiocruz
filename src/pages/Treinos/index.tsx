@@ -12,17 +12,17 @@ import {
 import { arrowLeft, arrowRight } from '../../assets/icons/Icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Alert, View } from 'react-native';
-import { useProgram } from '../../context/ProgramsContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const Treinos: React.FunctionComponent = () => {
-  const programContext = useProgram();
+  const authContext = useAuth();
   const defaultProgram = 'ansiedade';
 
   console.log('INICIOU... &&&&&&&&&&&');
   const handleProgram = async () => {
     try {
       console.log('Clicou');
-      await programContext.getPrograms(defaultProgram);
+      await authContext.getPrograms(defaultProgram);
     } catch (error: any) {
       Alert.alert(
         'Erro ao criar usuário',

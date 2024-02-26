@@ -11,7 +11,7 @@ import {
 } from '@firebase/auth';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { getFirestore } from 'firebase/firestore';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBtvSwOaYtT5jV8bveev-TGc0sUB63pWj4',
@@ -30,11 +30,12 @@ interface ICredentials {
 }
 interface IAuthContext {
   user: any;
-  db: any;
+  programData: any;
   signIn(credentials: ICredentials): void;
   signUp(credentials: ICredentials): void;
   signOutApp(): void;
   forgotPassword(email: any): void;
+  getPrograms(programName: string): any;
 }
 
 interface ScreenNavigationProp {
@@ -51,12 +52,11 @@ export const AuthContext = React.createContext<IAuthContext>(
 
 export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
   const [user, setUser] = useState(null);
-  // const [programData, setProgramData] = useState<any>(null);
+  const [programData, setProgramData] = useState<any>(null);
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-  console.log("🚀 ~ db:", db)
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   useEffect(() => {
@@ -66,6 +66,26 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
 
     return () => unsubscribe();
   }, [auth]);
+
+  async function getPrograms(programName: string) {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'programs'));
+      let program = {};
+
+      for (const doc of querySnapshot.docs) {
+        const programs = doc.data();
+        if (programs.id === programName) {
+          program = JSON.parse(JSON.stringify(doc.data()));
+        }
+      }
+      if (program) {
+        setProgramData(program);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar programa:', error);
+      return null;
+    }
+  }
 
   const signIn = async ({ email, password }: ICredentials) => {
     try {
@@ -121,11 +141,12 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        db,
+        programData,
         signIn,
         signUp,
         signOutApp,
         forgotPassword,
+        getPrograms,
       }}
     >
       {children}
