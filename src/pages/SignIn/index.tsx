@@ -43,7 +43,6 @@ const formSchema = yup.object({
 
 export const SignIn: React.FunctionComponent = () => {
   const authContext = useAuth();
-  console.log("🚀 ~ authContext:", authContext);
   const [loading, setLoading] = React.useState(false);
   const {
     handleSubmit,

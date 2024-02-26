@@ -11,10 +11,9 @@ import {
 } from '@firebase/auth';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { updateProfile } from 'firebase/auth';
-// import { getAnalytics } from 'firebase/analytics';
+import { getFirestore } from 'firebase/firestore';
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: 'AIzaSyBtvSwOaYtT5jV8bveev-TGc0sUB63pWj4',
   authDomain: 'acalma-sus.firebaseapp.com',
   projectId: 'acalma-sus',
@@ -31,6 +30,7 @@ interface ICredentials {
 }
 interface IAuthContext {
   user: any;
+  db: any;
   signIn(credentials: ICredentials): void;
   signUp(credentials: ICredentials): void;
   signOutApp(): void;
@@ -51,9 +51,12 @@ export const AuthContext = React.createContext<IAuthContext>(
 
 export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
   const [user, setUser] = useState(null);
+  // const [programData, setProgramData] = useState<any>(null);
+
   const app = initializeApp(firebaseConfig);
-  // const analytics = getAnalytics(app);
   const auth = getAuth(app);
+  const db = getFirestore(app);
+  console.log("🚀 ~ db:", db)
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   useEffect(() => {
@@ -66,7 +69,6 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
 
   const signIn = async ({ email, password }: ICredentials) => {
     try {
-      console.log('User logged in!');
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       Alert.alert(
@@ -79,7 +81,6 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
 
   const signUp = async ({ email, password }: ICredentials) => {
     try {
-      console.log('Chamou método....');
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       Alert.alert(
@@ -93,7 +94,6 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
   const signOutApp = async () => {
     try {
       if (user) {
-        console.log('User logged out successfully!');
         await signOut(auth);
       }
     } catch (error: any) {
@@ -119,7 +119,14 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, signIn, signUp, signOutApp, forgotPassword }}
+      value={{
+        user,
+        db,
+        signIn,
+        signUp,
+        signOutApp,
+        forgotPassword,
+      }}
     >
       {children}
     </AuthContext.Provider>

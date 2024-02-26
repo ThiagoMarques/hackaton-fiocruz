@@ -43,7 +43,20 @@ export const TrainingView = styled.View`
 `;
 
 
-
+export const CardUserButton = styled.TouchableOpacity`
+  display: flex;
+  flex-direction: row;
+  height: ${RFPercentage(12)}px;
+  width: 80%;
+  background-color: ${({ theme }) => theme.colors.bg};
+  justify-content: center;
+  align-items: center;
+  margin-top: ${RFValue(80)}px;
+  margin-left: ${RFValue(14)}px;
+  margin-right: ${RFValue(14)}px;
+  border: 2px solid ${({ theme }) => theme.colors.blue800};
+  border-radius: 20px;
+`;
 
 
 

@@ -60,7 +60,6 @@ export const SignUp: React.FunctionComponent = () => {
     };
     try {
       authContext.signUp(data);
-      console.log('Usuário criado!');
     } catch (error: any) {
       Alert.alert(
         'Erro ao criar usuário',

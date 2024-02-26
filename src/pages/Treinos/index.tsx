@@ -1,30 +1,36 @@
 import React from 'react';
 import {
+  CardUserButton,
   Container,
   Header,
   Icon,
   ImageHeaderTraining,
-  LogoutButton,
   TrainingText,
   TrainingTouchableOpacity,
-  TrainingView,
-  UserAvatar,
-  UserAvatarButton,
-  UserGreeting,
-  UserInfo,
-  UserInfoDetail,
-  UserName,
-  UserWrapper,
 } from './styles';
 
-import { useAuth } from '../../context/AuthContext';
-import { useNavigation } from '@react-navigation/native';
 import { arrowLeft, arrowRight } from '../../assets/icons/Icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert, View } from 'react-native';
+import { useProgram } from '../../context/ProgramsContext';
 
 export const Treinos: React.FunctionComponent = () => {
-  const { user, signOutApp } = useAuth();
-  const { navigate } = useNavigation<any>();
+  const programContext = useProgram();
+  const defaultProgram = 'ansiedade';
+
+  console.log('INICIOU... &&&&&&&&&&&');
+  const handleProgram = async () => {
+    try {
+      console.log('Clicou');
+      await programContext.getPrograms(defaultProgram);
+    } catch (error: any) {
+      Alert.alert(
+        'Erro ao criar usuário',
+        'Ocorreu um erro ao criar seu usuário, verifique os dados inseridos.',
+      );
+      console.error('Authentication error:', error.message);
+    }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -38,8 +44,13 @@ export const Treinos: React.FunctionComponent = () => {
             <ImageHeaderTraining resizeMode="contain" source={arrowRight} />
           </TrainingTouchableOpacity>
         </Header>
+        <View>
+          <CardUserButton onPress={() => handleProgram()}>
+            <Icon name="mail" />
+            {/* <CardUserButtonTitle>Carta do seu profissional de saúde</CardUserButtonTitle> */}
+          </CardUserButton>
+        </View>
       </Container>
     </SafeAreaView>
-
   );
 };
