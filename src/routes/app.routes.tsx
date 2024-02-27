@@ -8,6 +8,7 @@ import { Config } from '../pages/Config';
 import { Treinos } from '../pages/Treinos';
 import { TreinoDetalhado } from '../pages/TreinoDetalhado';
 import { Instrucoes } from '../pages/Instrucoes';
+import { TreinoPLay } from '../pages/TreinoPlay';
 
 const App = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,6 +61,7 @@ export const AppRoutes: React.FunctionComponent = () => {
       <App.Screen name="Register" component={Register} />
       <App.Screen name="TreinoDetalhado" component={TreinoDetalhado} />
       <App.Screen name="Instrucoes" component={Instrucoes} />
+      <App.Screen name="TreinoPlay" component={TreinoPLay} />
     </App.Navigator>
   );
 };

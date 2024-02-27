@@ -21,9 +21,9 @@ export const Instrucoes: React.FunctionComponent = () => {
   // const authContext = useAuth();
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
-  const handleInstructionView = async () => {
+  const handleStartTraining = async () => {
     try {
-      navigate('TreinoDetalhado');
+      navigate('TreinoPlay');
     } catch (error: any) {
       Alert.alert(
         'Erro ao iniciar treino',
@@ -41,7 +41,7 @@ export const Instrucoes: React.FunctionComponent = () => {
             Opte por headphones para melhor captação do som
           </InstructionsTitle>
         </ContainerInstructions>
-        <InstructionsButton onPress={() => handleInstructionView()}>
+        <InstructionsButton onPress={() => handleStartTraining()}>
           <InstructionsButtonTitle>Pular instruções</InstructionsButtonTitle>
         </InstructionsButton>
       </Container>
