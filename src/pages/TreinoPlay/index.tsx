@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Animated, Text, Image, Button, Dimensions, ImageBackground, Pressable, TouchableOpacity, View } from 'react-native';
+import { Animated, Text, Image, Button, Dimensions, ImageBackground, Pressable, TouchableOpacity, View, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Container, ContainerInstructions, InstructionsButton, InstructionsButtonTitle, PressableMic } from './styles';3
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
@@ -92,7 +92,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
 
   const handleFinishedTraining = async () => {
     try {
-      navigate('TreinoPlay');
+      navigate('Tabs');
     } catch (error: any) {
       Alert.alert(
         'Erro ao iniciar treino',

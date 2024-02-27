@@ -29,8 +29,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 export const Home: React.FunctionComponent = () => {
   const { user, signOutApp } = useAuth();
   const { navigate } = useNavigation<any>();
-  const handleRegister = () => {
-    navigate('Register');
+  const handleLetter = () => {
+    navigate('Carta');
   };
 
   const handleSignOut = () => {
@@ -58,7 +58,7 @@ export const Home: React.FunctionComponent = () => {
               Bem-vindo, {user.displayName ? user.displayName : user.email}!
             </UserName>
           </UserInfoDetail>
-          <CardUserButton onPress={() => handleRegister()}>
+          <CardUserButton onPress={() => handleLetter()}>
             <Icon name="mail" />
             <CardUserButtonTitle>Carta do seu profissional de saúde</CardUserButtonTitle>
           </CardUserButton>

@@ -25,7 +25,7 @@ import { Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { AppRoutes } from '../../routes/app.routes';
 
-export const Config: React.FunctionComponent = () => {
+export const Perfil: React.FunctionComponent = () => {
   const { user, signOutApp } = useAuth();
   const { navigate } = useNavigation<any>();
   const handleRegister = () => {

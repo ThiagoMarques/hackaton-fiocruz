@@ -4,11 +4,13 @@ import { Register } from '../pages/Register';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { Home } from '../pages/Home';
-import { Config } from '../pages/Config';
+import { Config, Perfil } from '../pages/Perfil';
 import { Treinos } from '../pages/Treinos';
 import { TreinoDetalhado } from '../pages/TreinoDetalhado';
 import { Instrucoes } from '../pages/Instrucoes';
 import { TreinoPLay } from '../pages/TreinoPlay';
+import { Conquistas } from '../pages/Conquistas';
+import { Carta } from '../pages/Carta';
 
 const App = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -40,14 +42,14 @@ function MyTabs() {
         component={Treinos}
       />
       <Tab.Screen
-        name="Config"
+        name="Perfil"
         options={{
-          tabBarLabel: 'Config',
+          tabBarLabel: 'Perfil',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" color={color} size={size} />
           ),
         }}
-        component={Config}
+        component={Conquistas}
       />
     </Tab.Navigator>
   );
@@ -62,6 +64,7 @@ export const AppRoutes: React.FunctionComponent = () => {
       <App.Screen name="TreinoDetalhado" component={TreinoDetalhado} />
       <App.Screen name="Instrucoes" component={Instrucoes} />
       <App.Screen name="TreinoPlay" component={TreinoPLay} />
+      <App.Screen name="Carta" component={Carta} />
     </App.Navigator>
   );
 };

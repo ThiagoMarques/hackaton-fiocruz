@@ -5,17 +5,17 @@ import { FlatList, FlatListProps } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.colors.dark};
+  background-color: ${({ theme }) => theme.colors.bg};
 `;
 
 export const ContainerInfo = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.colors.dark};
+  background-color: ${({ theme }) => theme.colors.bg};
 `;
 
 export const CardMain = styled.View`
   height: ${RFPercentage(25)}px;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.bg};
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
@@ -27,6 +27,25 @@ export const CardMain = styled.View`
   border-radius: 8px;
 `;
 
+export const CardSecondary = styled.View`
+  display: flex;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.bg};
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-bottom: ${RFValue(20)}px;
+  gap: ${RFValue(50)}px;
+`;
+
+export const CardSecondaryItem = styled.View`
+  background-color: ${({ theme }) => theme.colors.bg};
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: ${RFValue(20)}px;
+`;
+
 export const CardUser = styled.View`
   height: ${RFPercentage(12)}px;
   background-color: ${({ theme }) => theme.colors.primary};
@@ -36,7 +55,6 @@ export const CardUser = styled.View`
   margin-top: ${RFValue(14)}px;
   margin-left: ${RFValue(14)}px;
   margin-right: ${RFValue(14)}px;
-  /* padding: ${RFValue(28)}px; */
   border-radius: 8px;
 `;
 
@@ -75,21 +93,53 @@ export const UserAvatar = styled.Image`
 `;
 
 export const UserInfoDetail = styled.View`
-  margin-left: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const ContainMain = styled.Text`
+  font-size: ${RFValue(72)}px;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.gray800};
+  margin-top: ${RFValue(50)}px;
+`;
+
+export const ContainMainText = styled.Text`
+  font-size: ${RFValue(18)}px;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.gray800};
+`;
+
+export const CountMinutes = styled.Text`
+  font-size: ${RFValue(12)}px;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.gray800};
+  margin-top: ${RFValue(50)}px;
+`;
+
+export const CountNumber = styled.Text`
+  font-size: ${RFValue(42)}px;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.gray800};
+  margin-top: ${RFValue(50)}px;
+`;
+
+export const CountDescription = styled.Text`
+  font-size: ${RFValue(18)}px;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.gray800};
 `;
 
 export const UserGreeting = styled.Text`
   color: ${({ theme }) => theme.colors.gray800};
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
-`;
-
-export const UserName = styled.Text`
-  font-size: ${RFValue(20)}px;
-  font-family: ${({ theme }) => theme.fonts.bold};
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.gray800};
-  margin-top: ${RFValue(50)}px;
 `;
 
 export const Icon = styled(Feather)`
@@ -101,21 +151,22 @@ export const LogoutButton = styled.TouchableOpacity``;
 
 export const CardUserButton = styled.TouchableOpacity`
   height: ${RFPercentage(12)}px;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.bg};
   justify-content: center;
   align-items: center;
   flex-direction: column;
   margin-top: ${RFValue(20)}px;
   margin-left: ${RFValue(14)}px;
   margin-right: ${RFValue(14)}px;
-  /* padding: ${RFValue(28)}px; */
-  border-radius: 8px;
+  border: 2px solid ${({ theme }) => theme.colors.primaryLight};
+  border-radius: 50px;
 `;
 export const CardUserButtonTitle = styled.Text`
   font-size: ${RFValue(14)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
   font-weight: bold;
   color: ${({ theme }) => theme.colors.black};
+  padding-left: 14px;
 `;
 
 export const UserList = styled(

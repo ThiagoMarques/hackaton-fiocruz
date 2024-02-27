@@ -30,6 +30,7 @@ export const Treinos: React.FunctionComponent = () => {
     try {
       console.log('Clicou');
       await authContext.getPrograms(defaultProgram);
+      console.log('authContext', authContext.programData);
       navigate('TreinoDetalhado');
     } catch (error: any) {
       Alert.alert(

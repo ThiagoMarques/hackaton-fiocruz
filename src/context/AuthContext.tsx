@@ -31,11 +31,13 @@ interface ICredentials {
 interface IAuthContext {
   user: any;
   programData: any;
+  letterData: any;
   signIn(credentials: ICredentials): void;
   signUp(credentials: ICredentials): void;
   signOutApp(): void;
   forgotPassword(email: any): void;
   getPrograms(programName: string): any;
+  getLetters(): any;
 }
 
 interface ScreenNavigationProp {
@@ -53,6 +55,7 @@ export const AuthContext = React.createContext<IAuthContext>(
 export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
   const [user, setUser] = useState(null);
   const [programData, setProgramData] = useState<any>(null);
+  const [letterData, setLetterData] = useState<any>(null);
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -83,6 +86,27 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
       }
     } catch (error) {
       console.error('Erro ao buscar programa:', error);
+      return null;
+    }
+  }
+
+  async function getLetters() {
+    try {
+      const querySnapshot = await getDocs(collection(db, 'letters'));
+      let letter = {};
+
+      for (const doc of querySnapshot.docs) {
+        const letters = doc.data();
+        if (letters) {
+          letter = JSON.parse(JSON.stringify(doc.data()));
+          console.log("🚀 ~ getLetters ~ letter:", letter)
+        }
+      }
+      if (letter) {
+        setLetterData(letter);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar carta:', error);
       return null;
     }
   }
@@ -142,11 +166,13 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
       value={{
         user,
         programData,
+        letterData,
         signIn,
         signUp,
         signOutApp,
         forgotPassword,
         getPrograms,
+        getLetters,
       }}
     >
       {children}

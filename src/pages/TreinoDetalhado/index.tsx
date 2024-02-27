@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
+import { useAuth } from '../../context/AuthContext';
 // import { useAuth } from '../../context/AuthContext';
 // import { useNavigation } from '@react-navigation/native';
 
@@ -20,7 +21,7 @@ interface ScreenNavigationProp {
 }
 
 export const TreinoDetalhado: React.FunctionComponent = () => {
-  // const authContext = useAuth();
+  const authContext = useAuth();
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   const handleInstructionView = async () => {
@@ -39,8 +40,10 @@ export const TreinoDetalhado: React.FunctionComponent = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
         <ContainerDetail>
-          <TrainingTitle>Ansiedade</TrainingTitle>
-          <TrainingText>WPdpwqokpwqdkpqw</TrainingText>
+          <TrainingTitle>
+            {authContext.programData?.name ? authContext.programData.name : ''}
+          </TrainingTitle>
+          <TrainingText>{authContext.programData?.description ? authContext.programData.description : ''}</TrainingText>
           <TrainingDuration>Duração: 15 minutos</TrainingDuration>
           <TrainingButton onPress={() => handleInstructionView()}>
             <TrainingButtonTitle>Iniciar treino</TrainingButtonTitle>
