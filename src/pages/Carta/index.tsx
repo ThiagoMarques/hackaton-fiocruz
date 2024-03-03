@@ -31,7 +31,6 @@ export const Carta: React.FunctionComponent = () => {
       console.log('Clicou');
       await authContext.getLetters();
       console.log('authContext', authContext.letterData);
-      navigate('TreinoDetalhado');
     } catch (error: any) {
       Alert.alert(
         'Erro ao carregar dados',
