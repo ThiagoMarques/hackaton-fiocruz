@@ -20,6 +20,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
   const authContext = useAuth();
 
   const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [animatedSequence, setAnimatedSequence] = useState<Animated.CompositeAnimation | null>(null);
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   const [songState, setSongState] = useState('paused');
@@ -46,20 +47,9 @@ export const TreinoPLay: React.FunctionComponent = () => {
   const innerCircleScaleAnimation = animatedValue.interpolate(
     innerCircleScaleInterpolationConfig,
   );
-  // console.log("🚀 ~ innerCircleScaleAnimation:", innerCircleScaleAnimation)
 
-
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const fadeIn = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 5000,
-      useNativeDriver: true,
-    }).start();
-  };
-
+  const isSongPending = songState === 'pending';
+  const isSongPlaying = songState === 'playing';
 
   function buildAnimation(type: any, duration = 3000) {
     switch (type) {
@@ -143,8 +133,12 @@ export const TreinoPLay: React.FunctionComponent = () => {
     return Animated.sequence(animations);
   };
 
-  const animatedSequence = buildAnimatedSequence(authContext.programData);
-  // console.log("🚀 ~ animatedSequence:", animatedSequence)
+  useEffect(() => {
+    const sequence: Animated.CompositeAnimation | null = buildAnimatedSequence(authContext.programData);
+    if (sequence) {
+      setAnimatedSequence(sequence);
+    }
+  }, [authContext.programData]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -195,6 +189,8 @@ export const TreinoPLay: React.FunctionComponent = () => {
       }
     }, 100);
 
+    const animatedSequence = buildAnimatedSequence(authContext.programData);
+
     return () => {
       animatedValue.removeAllListeners();
       holdAnimatedValue.removeAllListeners();
@@ -203,20 +199,20 @@ export const TreinoPLay: React.FunctionComponent = () => {
   }, [value, stage, holdValue, songCurrentTime]);
 
   async function handlePlayingStart() {
-    const { granted } = await Audio.getPermissionsAsync();
-    if (granted) {
       try {
         const { sound } = await Audio.Sound.createAsync(
           // eslint-disable-next-line @typescript-eslint/no-var-requires
           alphaSound,
           { shouldPlay: true },
         );
-
+        await sound.playAsync();
         setSound(sound);
-        animatedSequence.start();
+        if(animatedSequence !== null) {
+          animatedSequence.start();
+        }
         setSongState('playing');
         // Reproduzir o áudio
-        const playbackStatus = await sound.playAsync();
+
 
         sound.setOnPlaybackStatusUpdate(status => {
           if (status.isLoaded) {
@@ -233,24 +229,23 @@ export const TreinoPLay: React.FunctionComponent = () => {
       } catch (error) {
         console.log('error', error);
       }
-    }
   }
   async function handlePause() {
-    const { granted } = await Audio.getPermissionsAsync();
-    if (granted) {
+    if (animatedSequence) {
+      animatedSequence.stop();
+    }
       try {
         if (sound !== null) { // Verifique se sound não é null
           const result = await sound.getStatusAsync();
           if (result.isLoaded && result.isPlaying) {
             await sound.pauseAsync();
-            animatedSequence.stop();
             setSound(null);
+            setSongState('paused');
           }
         }
       } catch (error) {
         console.error('Ocorreu um erro ao pausar a reprodução:', error);
       }
-    }
   }
 
   const handleFinishedTraining = async () => {
@@ -316,12 +311,12 @@ export const TreinoPLay: React.FunctionComponent = () => {
               },
             ]}
           >
-            {'Inspire'}
+            {isSongPending ? stage : ''}
           </Animated.Text>
         </View>
         <ContainerInstructions>
           <TouchableOpacity
-            onPress={() => (sound ? handlePause() : handlePlayingStart())}
+            onPress={() => (isSongPlaying ? handlePause() : handlePlayingStart())}
           >
             <Image
               style={{
@@ -330,10 +325,10 @@ export const TreinoPLay: React.FunctionComponent = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 tintColor: '#000',
-                opacity: sound ? 0.5 : 1,
+                opacity: isSongPending ? 0.5 : 1,
               }}
               resizeMode="contain"
-              source={sound ? pause : play}
+              source={isSongPlaying ? pause : play}
             ></Image>
           </TouchableOpacity>
           <Text
@@ -354,15 +349,12 @@ export const TreinoPLay: React.FunctionComponent = () => {
               },
             ]}
           >
-            {sound ? 'Carregando' : ''}
+            {isSongPending ? 'Carregando' : ''}
           </Text>
           <InstructionsButton onPress={() => handleFinishedTraining()}>
             <InstructionsButtonTitle>Finalizar treino</InstructionsButtonTitle>
           </InstructionsButton>
         </ContainerInstructions>
-
-
-
       </Container>
     </SafeAreaView>
   );
