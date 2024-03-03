@@ -18,6 +18,7 @@ interface ScreenNavigationProp {
 
 export const TreinoPLay: React.FunctionComponent = () => {
   const authContext = useAuth();
+
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
@@ -42,9 +43,23 @@ export const TreinoPLay: React.FunctionComponent = () => {
     inputRange: [0, 1],
     outputRange: [0.5, 1.1],
   };
-  const innerCircleScaleAnimation = new Animated.Value(1.0).interpolate(
+  const innerCircleScaleAnimation = animatedValue.interpolate(
     innerCircleScaleInterpolationConfig,
   );
+  // console.log("🚀 ~ innerCircleScaleAnimation:", innerCircleScaleAnimation)
+
+
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const fadeIn = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 5000,
+      useNativeDriver: true,
+    }).start();
+  };
+
 
   function buildAnimation(type: any, duration = 3000) {
     switch (type) {
@@ -54,11 +69,11 @@ export const TreinoPLay: React.FunctionComponent = () => {
             toValue: 1,
             duration: duration,
             easing: Easing.linear,
-            useNativeDriver: false,
+            useNativeDriver: true,
           }),
           Animated.timing(holdAnimatedValue, {
             toValue: 0,
-            useNativeDriver: false,
+            useNativeDriver: true,
           }),
         ]);
       case 'exhale':
@@ -67,11 +82,11 @@ export const TreinoPLay: React.FunctionComponent = () => {
             toValue: 0,
             duration: duration,
             easing: Easing.linear,
-            useNativeDriver: false
+            useNativeDriver: true
           }),
           Animated.timing(holdAnimatedValue, {
             toValue: 0,
-            useNativeDriver: false
+            useNativeDriver: true
           }),
         ]);
       case 'hold':
@@ -80,7 +95,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
               Animated.delay(duration),
               Animated.timing(holdAnimatedValue, {
                 toValue: 1,
-                useNativeDriver: false
+                useNativeDriver: true
               }),
             ])
           : Animated.delay(duration);
@@ -128,27 +143,8 @@ export const TreinoPLay: React.FunctionComponent = () => {
     return Animated.sequence(animations);
   };
 
-  // function onSongEnd(success: any) {
-  //   if (sound) {
-  //     if (!success) {
-  //       Alert.alert(
-  //         'Erro',
-  //         'Não foi possível iniciar o treino. (Error code : 2)',
-  //       );
-  //     } else {
-  //       const program = this.props.navigation.getParam('program', null);
-  //       await Api.saveProgramSession(program);
-  //     }
-  //     this.setState({
-  //       songState: 'paused',
-  //       songCurrentTime: 0,
-  //       playbackEnded: true,
-  //     });
-  //     this.sound.setCurrentTime(0);
-  //   }
-  // };
-
   const animatedSequence = buildAnimatedSequence(authContext.programData);
+  // console.log("🚀 ~ animatedSequence:", animatedSequence)
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -156,7 +152,6 @@ export const TreinoPLay: React.FunctionComponent = () => {
         try {
           const updateSongCurrentTime = async () => {
             const status = await sound.getStatusAsync();
-            // console.log("🚀 ~ updateSongCurrentTime ~ status:", status)
             if (status && status.isLoaded) {
               setSongCurrentTime(status.positionMillis / 1000); // Converta para segundos
             }
@@ -220,13 +215,11 @@ export const TreinoPLay: React.FunctionComponent = () => {
         setSound(sound);
         animatedSequence.start();
         setSongState('playing');
-        console.log('Iniciou!!!!')
         // Reproduzir o áudio
         const playbackStatus = await sound.playAsync();
 
         sound.setOnPlaybackStatusUpdate(status => {
           if (status.isLoaded) {
-            // const durationMinutes = status.durationMillis / 60000;
             const durationMinutes = Math.floor(status.durationMillis / 60000);
             const durationSeconds = Math.floor((status.durationMillis % 60000) / 1000);
             const durationTimeString = `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
@@ -235,21 +228,10 @@ export const TreinoPLay: React.FunctionComponent = () => {
             const currentSeconds = Math.floor((status.positionMillis % 60000) / 1000);
             const currentTimeString = `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
             setCurrentTime(currentTimeString);
-
-
-            // Formatar a string para exibir o tempo atual e a duração
-            // const currentTimeString = `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
-            // const durationTimeString = `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
-
-            // Atualizar o estado com os tempos formatados
-            // setCurrentTime(currentTimeString);
-            // setDuration(durationTimeString);
           }
         });
-        console.log("🚀 ~ handlePlayingStart ~ status:", status)
-
       } catch (error) {
-        // An error occurred!
+        console.log('error', error);
       }
     }
   }
@@ -261,6 +243,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
           const result = await sound.getStatusAsync();
           if (result.isLoaded && result.isPlaying) {
             await sound.pauseAsync();
+            animatedSequence.stop();
             setSound(null);
           }
         }
@@ -377,7 +360,11 @@ export const TreinoPLay: React.FunctionComponent = () => {
             <InstructionsButtonTitle>Finalizar treino</InstructionsButtonTitle>
           </InstructionsButton>
         </ContainerInstructions>
+
+
+
       </Container>
     </SafeAreaView>
   );
 };
+
