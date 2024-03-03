@@ -10,6 +10,8 @@ import { pause, play } from '../../assets/icons/Icons';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
 
+import alphaSound from '../../assets/alpha.mp3';
+
 interface ScreenNavigationProp {
   navigate: (screen: string) => void;
 }
@@ -21,6 +23,8 @@ export const TreinoPLay: React.FunctionComponent = () => {
 
   const [songState, setSongState] = useState('paused');
   const [songCurrentTime, setSongCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState('00:00:00');
+  const [duration, setDuration] = useState('00:00:00');
   const [songDuration, setSongDuration] = useState(0);
   const [playbackStarted, setPlaybackStarted] = useState(false);
   const [playbackEnded, setPlaybackEnded] = useState(false);
@@ -209,15 +213,41 @@ export const TreinoPLay: React.FunctionComponent = () => {
       try {
         const { sound } = await Audio.Sound.createAsync(
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          require('../../assets/alpha.mp3'),
-
+          alphaSound,
           { shouldPlay: true },
         );
+
         setSound(sound);
         animatedSequence.start();
         setSongState('playing');
-        await sound.playAsync();
-        // Your sound is playing!
+        console.log('Iniciou!!!!')
+        // Reproduzir o áudio
+        const playbackStatus = await sound.playAsync();
+
+        sound.setOnPlaybackStatusUpdate(status => {
+          if (status.isLoaded) {
+            // const durationMinutes = status.durationMillis / 60000;
+            const durationMinutes = Math.floor(status.durationMillis / 60000);
+            const durationSeconds = Math.floor((status.durationMillis % 60000) / 1000);
+            const durationTimeString = `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
+            setDuration(durationTimeString);
+            const currentMinutes = Math.floor(status.positionMillis / 60000);
+            const currentSeconds = Math.floor((status.positionMillis % 60000) / 1000);
+            const currentTimeString = `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
+            setCurrentTime(currentTimeString);
+
+
+            // Formatar a string para exibir o tempo atual e a duração
+            // const currentTimeString = `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
+            // const durationTimeString = `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
+
+            // Atualizar o estado com os tempos formatados
+            // setCurrentTime(currentTimeString);
+            // setDuration(durationTimeString);
+          }
+        });
+        console.log("🚀 ~ handlePlayingStart ~ status:", status)
+
       } catch (error) {
         // An error occurred!
       }
@@ -229,7 +259,6 @@ export const TreinoPLay: React.FunctionComponent = () => {
       try {
         if (sound !== null) { // Verifique se sound não é null
           const result = await sound.getStatusAsync();
-          console.log("🚀 ~ handlePause ~ result:", result)
           if (result.isLoaded && result.isPlaying) {
             await sound.pauseAsync();
             setSound(null);
@@ -332,7 +361,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
               },
             ]}
           >
-            {'00:00:00'} / {'00:00:00'}
+            {currentTime} / {duration}
           </Text>
           <Text
             style={[
