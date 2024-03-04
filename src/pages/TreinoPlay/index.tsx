@@ -9,6 +9,7 @@ import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { pause, play } from '../../assets/icons/Icons';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
+import KeepAwake from 'react-native-keep-awake';
 
 import alphaSound from '../../assets/alpha.mp3';
 
@@ -27,18 +28,12 @@ export const TreinoPLay: React.FunctionComponent = () => {
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   const [songState, setSongState] = useState('paused');
-  const [songCurrentTime, setSongCurrentTime] = useState(0);
   const [currentTime, setCurrentTime] = useState('00:00:00');
   const [duration, setDuration] = useState('00:00:00');
-  const [songDuration, setSongDuration] = useState(0);
-  const [playbackStarted, setPlaybackStarted] = useState(false);
-  const [inhale, setInhale] = useState('in');
   const [value, setValue] = useState(0);
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const [holdValue, setHoldValue] = useState(0);
   const holdAnimatedValue = useRef(new Animated.Value(0)).current;
   const [stage, setStage] = useState('Inspire');
-  const [caches, setCaches] = useState([]);
   const screenWidth = Dimensions.get('window').width;
   const outerCircleSize = screenWidth - 48 - 48;
   const innerCircleSize = outerCircleSize * 0.3;
@@ -156,7 +151,6 @@ export const TreinoPLay: React.FunctionComponent = () => {
     };
     animatedValue.addListener(animatedListener);
     return () => {
-      console.log('Saiu');
       animatedValue.removeListener(animatedListener);
     };
   }, []);
@@ -210,6 +204,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <KeepAwake>
       <Container>
         <View
           style={{
@@ -302,6 +297,8 @@ export const TreinoPLay: React.FunctionComponent = () => {
           </InstructionsButton>
         </ContainerInstructions>
       </Container>
+      </KeepAwake>
+
     </SafeAreaView>
   );
 };
