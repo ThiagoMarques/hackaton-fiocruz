@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Animated, Text, Image, Button, Dimensions, ImageBackground, Pressable, TouchableOpacity, View, Alert, Easing, Vibration } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -18,7 +18,10 @@ interface ScreenNavigationProp {
 
 export const TreinoPLay: React.FunctionComponent = () => {
   const authContext = useAuth();
-
+  const programData = {
+    cycles: authContext.programData.cycles,
+    track: authContext.programData.track,
+  }
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [animatedSequence, setAnimatedSequence] = useState<Animated.CompositeAnimation | null>(null);
   const { navigate } = useNavigation<ScreenNavigationProp>();
@@ -29,7 +32,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
   const [duration, setDuration] = useState('00:00:00');
   const [songDuration, setSongDuration] = useState(0);
   const [playbackStarted, setPlaybackStarted] = useState(false);
-  const [playbackEnded, setPlaybackEnded] = useState(false);
+  const [inhale, setInhale] = useState('in');
   const [value, setValue] = useState(0);
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [holdValue, setHoldValue] = useState(0);
@@ -134,118 +137,61 @@ export const TreinoPLay: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    const sequence: Animated.CompositeAnimation | null = buildAnimatedSequence(authContext.programData);
-    if (sequence) {
+    if (!animatedSequence) {
+      const sequence = buildAnimatedSequence(programData);
       setAnimatedSequence(sequence);
     }
-  }, [authContext.programData]);
+  }, []);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (sound !== null && songState === 'playing') {
-        try {
-          const updateSongCurrentTime = async () => {
-            const status = await sound.getStatusAsync();
-            if (status && status.isLoaded) {
-              setSongCurrentTime(status.positionMillis / 1000); // Converta para segundos
-            }
-          };
-          updateSongCurrentTime();
-        } catch (error) {
-          console.error('Erro ao obter o tempo de reprodução:', error);
+    const animatedListener = ({ value: currentRatio }: { value: number }) => {
+      setValue(currentRatio);
+      if ((currentRatio === 1) || (currentRatio === 0)) {
+        if (currentRatio === 0) {
+          setStage('Inspire');
+        } else {
+          setStage('Expire');
         }
       }
-    }, 100);
-
-    return () => {
-      clearInterval(intervalId);
     };
-  }, [sound, songState]);
-
-  useEffect(() => {
-    animatedValue.addListener(({ value: newValue }) => {
-      const newStage = newValue > value ? 'Inspire' : 'Expire';
-      setValue(newValue);
-      setStage(newStage);
-    });
-
-    holdAnimatedValue.addListener(({ value: newHoldValue }) => {
-      const newStage = newHoldValue > holdValue ? 'Segure' : stage;
-      Vibration.vibrate(500);
-      setHoldValue(newHoldValue);
-      setStage(newStage);
-    });
-
-    const intervalId = setInterval(async () => {
-      if (sound && songState === 'playing') {
-        try {
-          const status = await sound.getStatusAsync();
-          if (status.isLoaded && !status.isBuffering) {
-            setSongCurrentTime(status.positionMillis / 1000); // Converta para segundos
-          }
-        } catch (error) {
-          console.error('Erro ao obter o tempo de reprodução:', error);
-        }
-      }
-    }, 100);
-
-    const animatedSequence = buildAnimatedSequence(authContext.programData);
-
+    animatedValue.addListener(animatedListener);
     return () => {
-      animatedValue.removeAllListeners();
-      holdAnimatedValue.removeAllListeners();
-      clearInterval(intervalId);
+      console.log('Saiu');
+      animatedValue.removeListener(animatedListener);
     };
-  }, [value, stage, holdValue, songCurrentTime]);
-
-  async function handlePlayingStart() {
-      try {
-        const { sound } = await Audio.Sound.createAsync(
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
-          alphaSound,
-          { shouldPlay: true },
-        );
-        await sound.playAsync();
-        setSound(sound);
-        if(animatedSequence !== null) {
-          animatedSequence.start();
-        }
-        setSongState('playing');
-        // Reproduzir o áudio
+  }, []);
 
 
-        sound.setOnPlaybackStatusUpdate(status => {
-          if (status.isLoaded) {
-            const durationMinutes = Math.floor(status.durationMillis / 60000);
-            const durationSeconds = Math.floor((status.durationMillis % 60000) / 1000);
-            const durationTimeString = `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
-            setDuration(durationTimeString);
-            const currentMinutes = Math.floor(status.positionMillis / 60000);
-            const currentSeconds = Math.floor((status.positionMillis % 60000) / 1000);
-            const currentTimeString = `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
-            setCurrentTime(currentTimeString);
-          }
-        });
-      } catch (error) {
-        console.log('error', error);
+  const handlePlayingStart = async () => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(alphaSound, { shouldPlay: true });
+      setSound(sound);
+      if (animatedSequence) {
+        animatedSequence.start();
       }
-  }
-  async function handlePause() {
-    if (animatedSequence) {
-      animatedSequence.stop();
+      setSongState('playing');
+      sound.setOnPlaybackStatusUpdate(status => {
+        if (status.isLoaded) {
+          const durationMinutes = Math.floor(status.durationMillis / 60000);
+          const durationSeconds = Math.floor((status.durationMillis % 60000) / 1000);
+          const durationTimeString = `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
+          setDuration(durationTimeString);
+          const currentMinutes = Math.floor(status.positionMillis / 60000);
+          const currentSeconds = Math.floor((status.positionMillis % 60000) / 1000);
+          const currentTimeString = `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
+          setCurrentTime(currentTimeString);
+        }
+      });
+    } catch (error) {
+      console.log('error', error);
     }
-      try {
-        if (sound !== null) { // Verifique se sound não é null
-          const result = await sound.getStatusAsync();
-          if (result.isLoaded && result.isPlaying) {
-            await sound.pauseAsync();
-            setSound(null);
-            setSongState('paused');
-          }
-        }
-      } catch (error) {
-        console.error('Ocorreu um erro ao pausar a reprodução:', error);
-      }
+  };
+
+  async function handlePause() {
+    setSongState('paused');
+    setSound(null);
+    animatedSequence.stop();
+    await sound.pauseAsync();
   }
 
   const handleFinishedTraining = async () => {
@@ -311,7 +257,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
               },
             ]}
           >
-            {isSongPending ? stage : ''}
+            {value === 0 ? 'Segure' : value === 1 ? 'Segure' : stage}
           </Animated.Text>
         </View>
         <ContainerInstructions>
