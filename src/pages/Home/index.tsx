@@ -31,8 +31,9 @@ export const Home: React.FunctionComponent = () => {
             <UserAvatar source={logoDefault} />
           </UserAvatarButton>
           <UserInfoDetail>
+            <UserName>Bem-vindo,</UserName>
             <UserName>
-              Bem-vindo, {user.displayName ? user.displayName : user.email}!
+              {user.displayName ? user.displayName : user.email}!
             </UserName>
           </UserInfoDetail>
           <CardUserButton onPress={() => handleLetter()}>

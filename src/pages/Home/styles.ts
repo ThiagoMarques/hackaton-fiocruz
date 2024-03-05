@@ -58,7 +58,8 @@ export const UserInfo = styled.View`
 
 export const UserInfoDetail = styled.View`
   display: flex;
-  margin-top: ${RFPercentage(8)}px;
+  align-items: center;
+  margin-top: ${RFPercentage(14)}px;
   /* margin-left: 20px; */
 `;
 
@@ -92,7 +93,7 @@ export const CardUserButtonTitle = styled.Text`
   font-size: ${RFValue(14)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.blue800};
+  color: ${({ theme }) => theme.colors.blue500};
   padding-left: 12px;
 `;
 
@@ -107,7 +108,7 @@ export const UserName = styled.Text`
   font-family: ${({ theme }) => theme.fonts.bold};
   font-weight: bold;
   color: ${({ theme }) => theme.colors.gray800};
-  margin-top: ${RFValue(50)}px;
+  margin-top: ${RFValue(8)}px;
 `;
 
 export const Icon = styled(Feather)`
