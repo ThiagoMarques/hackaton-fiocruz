@@ -2,9 +2,12 @@ import React from 'react';
 import {
   BackToolSignIn,
   BackToolSignInTitle,
+  CardButton,
   Container,
   Content,
   Icon,
+  SignInButton,
+  SignInTitle,
   Title,
 } from './styles';
 import {
@@ -107,7 +110,13 @@ export const SignUp: React.FunctionComponent = () => {
               placeholder="Senha"
               error={errors.password && errors.password.message}
             />
-            <Button title="Criar conta" onPress={handleSubmit(handleSignUp)} />
+            <CardButton>
+              <SignInButton
+                onPress={handleSubmit(handleSignUp)}
+              >
+                <SignInTitle>Criar conta</SignInTitle>
+              </SignInButton>
+            </CardButton>
           </Content>
         </Container>
       </ScrollView>
