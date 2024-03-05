@@ -98,6 +98,7 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
   }, [auth]);
 
   async function getPrograms(programName: string) {
+    console.log('programName', programName);
     try {
       const querySnapshot = await getDocs(collection(db, 'programs'));
       let program = {};

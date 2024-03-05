@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   CardUserButton,
   CardUserButtonTitle,
@@ -21,13 +21,15 @@ interface ScreenNavigationProp {
 }
 
 export const Training: React.FunctionComponent = () => {
+  const [position, setPosition] = useState(0);
   const authContext = useAuth();
+  const programs = ['Ansiedade', 'Enxaqueca', 'Insônia'];
   const defaultProgram = 'ansiedade';
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
-  const handleProgram = async () => {
+  const handleProgram = async (programName: string) => {
     try {
-      await authContext.getPrograms(defaultProgram);
+      await authContext.getPrograms(programName);
       navigate('TrainingDetail');
     } catch (error: any) {
       Alert.alert(
@@ -38,21 +40,32 @@ export const Training: React.FunctionComponent = () => {
     }
   };
 
+  function changeTraining(increase: boolean) {
+    let newPosition = position;
+    const limit = programs.length - 1;
+    if (increase) {
+      newPosition = newPosition < limit ? newPosition + 1 : 0;
+    } else {
+      newPosition = newPosition > 0 ? newPosition - 1 : limit;
+    }
+    setPosition(newPosition);
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
         <Header>
-          <TrainingTouchableOpacity>
+          <TrainingTouchableOpacity onTouchEnd={() => changeTraining(false)}>
             <ImageHeaderTraining resizeMode="contain" source={arrowLeft} />
           </TrainingTouchableOpacity>
-          <TrainingText>{'Ansiedade'}</TrainingText>
-          <TrainingTouchableOpacity>
+          <TrainingText>{programs[position]}</TrainingText>
+          <TrainingTouchableOpacity onTouchEnd={() => changeTraining(true)}>
             <ImageHeaderTraining resizeMode="contain" source={arrowRight} />
           </TrainingTouchableOpacity>
         </Header>
         <TrainingView>
-          <CardUserButton onPress={() => handleProgram()}>
-            <CardUserButtonTitle>Ansiedade</CardUserButtonTitle>
+          <CardUserButton onPress={() => handleProgram(programs[position])}>
+            <CardUserButtonTitle>{programs[position]}</CardUserButtonTitle>
           </CardUserButton>
         </TrainingView>
       </Container>
