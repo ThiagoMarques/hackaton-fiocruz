@@ -24,7 +24,6 @@ export const Training: React.FunctionComponent = () => {
   const [position, setPosition] = useState(0);
   const authContext = useAuth();
   const programs = ['Ansiedade', 'Enxaqueca', 'Insônia'];
-  const defaultProgram = 'ansiedade';
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   const handleProgram = async (programName: string) => {
