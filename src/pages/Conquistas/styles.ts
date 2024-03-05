@@ -19,11 +19,9 @@ export const CardMain = styled.View`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  margin-top: ${RFValue(130)}px;
-  margin-bottom: ${RFValue(20)}px;
+  margin-top: ${RFValue(80)}px;
   margin-left: ${RFValue(14)}px;
   margin-right: ${RFValue(14)}px;
-  /* padding: ${RFValue(28)}px; */
   border-radius: 8px;
 `;
 
@@ -34,7 +32,7 @@ export const CardSecondary = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  margin-bottom: ${RFValue(20)}px;
+  margin-bottom: ${RFValue(8)}px;
   gap: ${RFValue(50)}px;
 `;
 
@@ -65,7 +63,7 @@ export const Header = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  padding-top: ${RFValue(28)}px;
+  padding-top: ${RFValue(18)}px;
 `;
 
 export const UserWrapper = styled.View`
@@ -99,7 +97,7 @@ export const UserInfoDetail = styled.View`
 `;
 
 export const ContainMain = styled.Text`
-  font-size: ${RFValue(72)}px;
+  font-size: ${RFValue(54)}px;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-weight: bold;
   color: ${({ theme }) => theme.colors.gray800};
@@ -122,7 +120,7 @@ export const CountMinutes = styled.Text`
 `;
 
 export const CountNumber = styled.Text`
-  font-size: ${RFValue(42)}px;
+  font-size: ${RFValue(38)}px;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-weight: bold;
   color: ${({ theme }) => theme.colors.gray800};
@@ -150,12 +148,11 @@ export const Icon = styled(Feather)`
 export const LogoutButton = styled.TouchableOpacity``;
 
 export const CardUserButton = styled.TouchableOpacity`
-  height: ${RFPercentage(12)}px;
+  height: ${RFPercentage(10)}px;
   background-color: ${({ theme }) => theme.colors.bg};
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: ${RFValue(20)}px;
   margin-left: ${RFValue(14)}px;
   margin-right: ${RFValue(14)}px;
   border: 2px solid ${({ theme }) => theme.colors.primaryLight};
@@ -169,6 +166,48 @@ export const CardUserButtonTitle = styled.Text`
   padding-left: 14px;
 `;
 
+export const ContainerButtons = styled.View`
+  background-color: ${({ theme }) => theme.colors.bg};
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: ${RFValue(20)}px;
+`;
+
+export const ProfileButton = styled.TouchableOpacity`
+  height: ${RFPercentage(8)}px;
+  width: 60%;
+  background-color: ${({ theme }) => theme.colors.bg};
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 2px solid ${({ theme }) => theme.colors.primaryLight};
+  border-radius: 8px;
+`;
+
+export const ProfileButtonTitle = styled.Text`
+  font-size: ${RFValue(12)}px;
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+export const ContainerUserLogged = styled.View`
+  background-color: ${({ theme }) => theme.colors.bg};
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  margin-top: ${RFValue(20)}px;
+`;
+
+export const ContainerUserLoggedText = styled.Text`
+  font-size: ${RFValue(12)}px;
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
 export const UserList = styled(
   FlatList as new (props: FlatListProps<any>) => FlatList<any>,
 ).attrs({
@@ -177,17 +216,3 @@ export const UserList = styled(
   },
   showVerticalScrollIndicator: false,
 })``;
-
-// export const UserListEmpty = styled.Text`
-//   font-size: ${RFValue(18)}px;
-//   font-family: ${({ theme }) => theme.fonts.regular};
-//   color: ${({ theme }) => theme.colors.gray500};
-// `;
-
-// export const UserListHeader = styled.Text`
-//   font-size: ${RFValue(24)}px;
-//   font-family: ${({ theme }) => theme.fonts.bold};
-//   font-weight: bold;
-//   color: ${({ theme }) => theme.colors.primary};
-//   margin-bottom: ${RFValue(8)}px;
-// `;

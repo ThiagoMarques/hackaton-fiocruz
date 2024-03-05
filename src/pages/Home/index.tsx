@@ -29,6 +29,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 export const Home: React.FunctionComponent = () => {
   const { user, signOutApp } = useAuth();
   const { navigate } = useNavigation<any>();
+  const authContext = useAuth();
+  authContext.test();
   const handleLetter = () => {
     navigate('Carta');
   };
