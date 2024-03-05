@@ -62,8 +62,9 @@ export const SignIn: React.FunctionComponent = () => {
       password: form.password,
     };
     try {
-      // setLoading(true);
+      setLoading(true);
       authContext.signIn(data);
+      setLoading(false);
     } catch (error: any) {
       Alert.alert(
         'Erro na autenticação',
@@ -111,7 +112,7 @@ export const SignIn: React.FunctionComponent = () => {
                 disabled={loading || errors.email || errors.password}
                 onPress={handleSubmit(handleSignIn)}
               >
-                <SignInTitle>Entrar</SignInTitle>
+                <SignInTitle>{loading ? 'Carregando...' : 'Entrar'}</SignInTitle>
               </SignInButton>
             </CardButton>
 
