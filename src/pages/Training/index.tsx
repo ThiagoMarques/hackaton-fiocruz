@@ -4,7 +4,6 @@ import {
   CardUserButtonTitle,
   Container,
   Header,
-  Icon,
   ImageHeaderTraining,
   TrainingText,
   TrainingTouchableOpacity,
@@ -21,17 +20,15 @@ interface ScreenNavigationProp {
   navigate: (screen: string) => void;
 }
 
-export const Treinos: React.FunctionComponent = () => {
+export const Training: React.FunctionComponent = () => {
   const authContext = useAuth();
   const defaultProgram = 'ansiedade';
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   const handleProgram = async () => {
     try {
-      console.log('Clicou');
       await authContext.getPrograms(defaultProgram);
-      console.log('authContext', authContext.programData);
-      navigate('TreinoDetalhado');
+      navigate('TrainingDetail');
     } catch (error: any) {
       Alert.alert(
         'Erro ao buscar programas',

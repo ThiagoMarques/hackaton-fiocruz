@@ -20,13 +20,13 @@ interface ScreenNavigationProp {
   navigate: (screen: string) => void;
 }
 
-export const TreinoDetalhado: React.FunctionComponent = () => {
+export const TrainingDetail: React.FunctionComponent = () => {
   const authContext = useAuth();
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   const handleInstructionView = async () => {
     try {
-      navigate('Instrucoes');
+      navigate('Instructions');
     } catch (error: any) {
       Alert.alert(
         'Erro ao iniciar treino',
@@ -43,7 +43,11 @@ export const TreinoDetalhado: React.FunctionComponent = () => {
           <TrainingTitle>
             {authContext.programData?.name ? authContext.programData.name : ''}
           </TrainingTitle>
-          <TrainingText>{authContext.programData?.description ? authContext.programData.description : ''}</TrainingText>
+          <TrainingText>
+            {authContext.programData?.description
+              ? authContext.programData.description
+              : ''}
+          </TrainingText>
           <TrainingDuration>Duração: 15 minutos</TrainingDuration>
           <TrainingButton onPress={() => handleInstructionView()}>
             <TrainingButtonTitle>Iniciar treino</TrainingButtonTitle>

@@ -12,16 +12,7 @@ import {
 } from '@firebase/auth';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  getFirestore,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
+import { addDoc, collection, getDocs, getFirestore } from 'firebase/firestore';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBtvSwOaYtT5jV8bveev-TGc0sUB63pWj4',
@@ -75,8 +66,6 @@ interface IAuthContext {
   getPrograms(programName: string): any;
   getLetters(): any;
   saveProgramSession(programName: string, programDuration: string): any;
-  getProgramsSessions(): any;
-  test(): any;
 }
 
 interface ScreenNavigationProp {
@@ -174,71 +163,6 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
     }
   }
 
-  async function test() {
-    const citiesRef = collection(db, 'cities');
-
-    await setDoc(doc(citiesRef, 'SF'), {
-      name: 'San Francisco',
-      state: 'CA',
-      country: 'USA',
-      capital: false,
-      population: 860000,
-      regions: ['west_coast', 'norcal'],
-    });
-    await setDoc(doc(citiesRef, 'LA'), {
-      name: 'Los Angeles',
-      state: 'CA',
-      country: 'USA',
-      capital: false,
-      population: 3900000,
-      regions: ['west_coast', 'socal'],
-    });
-    await setDoc(doc(citiesRef, 'DC'), {
-      name: 'Washington, D.C.',
-      state: null,
-      country: 'USA',
-      capital: true,
-      population: 680000,
-      regions: ['east_coast'],
-    });
-    await setDoc(doc(citiesRef, 'TOK'), {
-      name: 'Tokyo',
-      state: null,
-      country: 'Japan',
-      capital: true,
-      population: 9000000,
-      regions: ['kanto', 'honshu'],
-    });
-    await setDoc(doc(citiesRef, 'BJ'), {
-      name: 'Beijing',
-      state: null,
-      country: 'China',
-      capital: true,
-      population: 21500000,
-      regions: ['jingjinji', 'hebei'],
-    });
-  }
-
-  async function getProgramsSessions() {
-    console.log('Iniciando...');
-    const sessionRef = collection(db, 'sessions');
-
-    // Create a query against the collection.
-    const q = query(
-      sessionRef,
-      where('email', '==', 'thiagossmarques@gmail.com'),
-    );
-    getDocs(q)
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          console.log(doc.id, ' => ', doc.data());
-        });
-      })
-      .catch(error => {
-        console.log('Erro ao buscar documentos:', error);
-      });
-  }
-
   const signIn = async ({ email, password }: ICredentials) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -267,6 +191,8 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
     try {
       if (user) {
         await signOut(auth);
+        setUser(undefined);
+        navigate('SignIn');
       }
     } catch (error: any) {
       Alert.alert(
@@ -303,8 +229,6 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
         getPrograms,
         getLetters,
         saveProgramSession,
-        getProgramsSessions,
-        test,
       }}
     >
       {children}

@@ -18,8 +18,6 @@ import {
   Content,
   CreateAccount,
   CreateAccountTitle,
-  ForgotPasswordButton,
-  ForgotPasswordTitle,
   Icon,
   Logo,
   Title,
@@ -41,11 +39,9 @@ const formSchema = yup.object({
   email: yup.string().email('Email inválido.').required('Informe o email.'),
 });
 
-
 export const ForgotPassword: React.FunctionComponent = () => {
   const authContext = useAuth();
-  const { goBack, navigate } = useNavigation<ScreenNavigationProp>();
-  const [loading, setLoading] = React.useState(false);
+  const { navigate } = useNavigation<ScreenNavigationProp>();
   const {
     handleSubmit,
     control,
@@ -97,7 +93,6 @@ export const ForgotPassword: React.FunctionComponent = () => {
             />
             <Button
               title="Enviar"
-              disabled={loading || errors.email || errors.password}
               onPress={handleSubmit(handleForgotPassword)}
             />
           </Content>

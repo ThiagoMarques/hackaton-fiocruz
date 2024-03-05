@@ -10,20 +10,18 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
-// import { useAuth } from '../../context/AuthContext';
-// import { useNavigation } from '@react-navigation/native';
 
 interface ScreenNavigationProp {
   navigate: (screen: string) => void;
 }
 
-export const Instrucoes: React.FunctionComponent = () => {
+export const Instructions: React.FunctionComponent = () => {
   // const authContext = useAuth();
   const { navigate } = useNavigation<ScreenNavigationProp>();
 
   const handleStartTraining = async () => {
     try {
-      navigate('TreinoPlay');
+      navigate('TrainingPlay');
     } catch (error: any) {
       Alert.alert(
         'Erro ao iniciar treino',

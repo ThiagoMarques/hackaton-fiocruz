@@ -172,6 +172,7 @@ export const ContainerButtons = styled.View`
   align-items: center;
   flex-direction: column;
   gap: 8px;
+  margin-top: ${RFValue(20)}px;
   margin-bottom: ${RFValue(20)}px;
 `;
 
@@ -202,7 +203,7 @@ export const ContainerUserLogged = styled.View`
 `;
 
 export const ContainerUserLoggedText = styled.Text`
-  font-size: ${RFValue(12)}px;
+  font-size: ${RFValue(8)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
   font-weight: bold;
   color: ${({ theme }) => theme.colors.black};

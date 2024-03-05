@@ -9,14 +9,13 @@ import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { pause, play } from '../../assets/icons/Icons';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
-import KeepAwake from 'react-native-keep-awake';
 import alphaSound from '../../assets/alpha.mp3';
 
 interface ScreenNavigationProp {
   navigate: (screen: string) => void;
 }
 
-export const TreinoPLay: React.FunctionComponent = () => {
+export const TrainingPlay: React.FunctionComponent = () => {
   const authContext = useAuth();
   const programData = {
     cycles: authContext.programData.cycles,
@@ -184,10 +183,14 @@ export const TreinoPLay: React.FunctionComponent = () => {
   };
 
   async function handlePause() {
+    if (animatedSequence) {
+      animatedSequence.stop();
+    }
     setSongState('paused');
     setSound(null);
-    animatedSequence.stop();
-    await sound.pauseAsync();
+    if(sound) {
+      await sound.pauseAsync();
+    }
   }
 
   const handleFinishedTraining = async () => {
