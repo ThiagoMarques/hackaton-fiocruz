@@ -171,7 +171,7 @@ export const Progress: React.FunctionComponent = () => {
               </ProfileButtonTitle>
             </ProfileButton>
             <ProfileButton onPress={() => handleRegister()}>
-              <ProfileButtonTitle>Editar Profile</ProfileButtonTitle>
+              <ProfileButtonTitle>Editar Perfil</ProfileButtonTitle>
             </ProfileButton>
             <ProfileButton onPress={() => handleSignOut()}>
               <ProfileButtonTitle>Sair</ProfileButtonTitle>
