@@ -14,12 +14,15 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Button } from '../../components/Form/Button';
 import {
+  CardButton,
   Container,
   Content,
   CreateAccount,
   CreateAccountTitle,
   Icon,
   Logo,
+  SignInButton,
+  SignInTitle,
   Title,
 } from './styles';
 import logo from '../../assets/logo.jpg';
@@ -91,20 +94,21 @@ export const ForgotPassword: React.FunctionComponent = () => {
               keyboardType="email-address"
               error={errors.email && errors.email.message}
             />
-            <Button
-              title="Enviar"
-              onPress={handleSubmit(handleForgotPassword)}
-            />
+            <CardButton>
+              <SignInButton onPress={handleSubmit(handleForgotPassword)}>
+                <SignInTitle>Criar conta</SignInTitle>
+              </SignInButton>
+            </CardButton>
           </Content>
         </Container>
       </ScrollView>
       <CreateAccount
         onPress={() => {
-          navigate('SignUp');
+          navigate('SignIn');
         }}
       >
-        <Icon name="log-in" />
-        <CreateAccountTitle>Criar uma conta</CreateAccountTitle>
+        <Icon name="arrow-left" />
+        <CreateAccountTitle>Voltar para login</CreateAccountTitle>
       </CreateAccount>
     </KeyboardAvoidingView>
   );

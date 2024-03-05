@@ -111,9 +111,7 @@ export const SignUp: React.FunctionComponent = () => {
               error={errors.password && errors.password.message}
             />
             <CardButton>
-              <SignInButton
-                onPress={handleSubmit(handleSignUp)}
-              >
+              <SignInButton onPress={handleSubmit(handleSignUp)}>
                 <SignInTitle>Criar conta</SignInTitle>
               </SignInButton>
             </CardButton>
