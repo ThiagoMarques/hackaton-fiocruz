@@ -19,6 +19,7 @@ export default {
     danger: '#e83f5b',
     dark: '#121214',
     light: '#f1f1f1',
+    blue300: '#0099c5',
     blue500: '#003047',
     blue800: '#001823',
     gray500: '#a8a8b3',

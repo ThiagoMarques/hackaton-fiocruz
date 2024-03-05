@@ -5,14 +5,14 @@ import { Feather } from '@expo/vector-icons';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.colors.bg};
+  background-color: ${({ theme }) => theme.colors.primaryLight};
 `;
 export const Header = styled.View`
   display: flex;
   width: 100%;
   height: ${RFPercentage(16)}px;
 
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.blue300};
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
@@ -29,7 +29,7 @@ export const ImageHeaderTraining = styled.Image`
 
 export const TrainingText = styled.Text`
   color: ${({ theme }) => theme.colors.light};
-  font-size: ${RFValue(18)}px;
+  font-size: ${RFValue(20)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
 `;
 
@@ -37,12 +37,13 @@ export const TrainingView = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: ${RFPercentage(16)}px;
 `;
 
 export const CardUserButton = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
-  height: ${RFPercentage(12)}px;
+  height: ${RFPercentage(20)}px;
   width: 90%;
   background-color: ${({ theme }) => theme.colors.bg};
   justify-content: center;
@@ -61,12 +62,6 @@ export const CardUserButtonTitle = styled.Text`
   color: ${({ theme }) => theme.colors.blue800};
   padding-left: 12px;
 `;
-
-
-
-
-
-
 
 export const UserAvatarButton = styled.TouchableOpacity``;
 

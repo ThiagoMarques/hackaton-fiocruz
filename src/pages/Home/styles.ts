@@ -5,19 +5,18 @@ import { FlatList, FlatListProps } from 'react-native';
 
 export const Container = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.colors.bg};
+  background-color: ${({ theme }) => theme.colors.primaryLight};
 `;
 
 export const CardMain = styled.View`
   height: ${RFPercentage(1400)}px;
   background-color: ${({ theme }) => theme.colors.primaryLight};
   justify-content: flex-start;
+  text-align: center;
   align-items: center;
   flex-direction: column;
   margin-top: ${RFValue(130)}px;
-  margin-bottom: ${RFValue(20)}px;
-  border-top-left-radius: 200px;
-  border-top-right-radius: 200px;
+  margin-bottom: ${RFValue(130)}px;
 `;
 
 export const CardUser = styled.View`
@@ -26,11 +25,6 @@ export const CardUser = styled.View`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  margin-top: ${RFValue(14)}px;
-  margin-left: ${RFValue(14)}px;
-  margin-right: ${RFValue(14)}px;
-  /* padding: ${RFValue(28)}px; */
-  border-radius: 8px;
 `;
 
 export const Header = styled.View`
@@ -58,7 +52,6 @@ export const UserInfo = styled.View`
 
 export const UserInfoDetail = styled.View`
   display: flex;
-  align-items: center;
   margin-top: ${RFPercentage(14)}px;
   /* margin-left: 20px; */
 `;
@@ -69,8 +62,8 @@ export const UserAvatarButton = styled.TouchableOpacity`
 `;
 
 export const UserAvatar = styled.Image`
-  width: ${RFValue(80)}px;
-  height: ${RFValue(80)}px;
+  width: ${RFValue(120)}px;
+  height: ${RFValue(120)}px;
   border-radius: 10px;
 `;
 
@@ -93,7 +86,7 @@ export const CardUserButtonTitle = styled.Text`
   font-size: ${RFValue(14)}px;
   font-family: ${({ theme }) => theme.fonts.regular};
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.blue500};
+  color: ${({ theme }) => theme.colors.blue800};
   padding-left: 12px;
 `;
 
@@ -107,8 +100,9 @@ export const UserName = styled.Text`
   font-size: ${RFValue(20)}px;
   font-family: ${({ theme }) => theme.fonts.bold};
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.gray800};
-  margin-top: ${RFValue(8)}px;
+  color: ${({ theme }) => theme.colors.blue500};
+  text-align: center;
+  margin-top: ${RFValue(20)}px;
 `;
 
 export const Icon = styled(Feather)`
