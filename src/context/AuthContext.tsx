@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import {
@@ -11,7 +12,14 @@ import {
 } from '@firebase/auth';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  setDoc,
+} from 'firebase/firestore';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBtvSwOaYtT5jV8bveev-TGc0sUB63pWj4',
@@ -23,6 +31,31 @@ export const firebaseConfig = {
   measurementId: 'G-FKDN1788XC',
 };
 
+interface UserData {
+  _redirectEventId?: any;
+  apiKey: string;
+  appName: string;
+  createdAt: any;
+  displayName?: any;
+  email: string;
+  emailVerified: boolean;
+  isAnonymous: boolean;
+  lastLoginAt: any;
+  phoneNumber?: any;
+  photoURL?: any;
+  providerData: ProviderData[];
+  stsTokenManager: {
+    accessToken: string;
+    expirationTime: number;
+    refreshToken: string;
+  };
+  tenantId?: any;
+  uid: string;
+}
+interface ProviderData {
+  id: string;
+  email: string;
+}
 interface ICredentials {
   email: string;
   password: string;
@@ -38,6 +71,7 @@ interface IAuthContext {
   forgotPassword(email: any): void;
   getPrograms(programName: string): any;
   getLetters(): any;
+  saveProgramSession(programName: string, programDuration: string): any;
 }
 
 interface ScreenNavigationProp {
@@ -53,7 +87,7 @@ export const AuthContext = React.createContext<IAuthContext>(
 );
 
 export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<UserData>();
   const [programData, setProgramData] = useState<any>(null);
   const [letterData, setLetterData] = useState<any>(null);
 
@@ -64,9 +98,8 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: any) => {
-      setUser(user);
+      setUser(user.toJSON());
     });
-
     return () => unsubscribe();
   }, [auth]);
 
@@ -99,7 +132,6 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
         const letters = doc.data();
         if (letters) {
           letter = JSON.parse(JSON.stringify(doc.data()));
-          console.log("🚀 ~ getLetters ~ letter:", letter)
         }
       }
       if (letter) {
@@ -108,6 +140,32 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
     } catch (error) {
       console.error('Erro ao buscar carta:', error);
       return null;
+    }
+  }
+
+  async function saveProgramSession(
+    programName: string,
+    programDuration: string,
+  ) {
+    const now = moment();
+    const collectionData = 'sessions';
+
+    if (user) {
+      const userData = {
+        id: user.uid ? user.uid : '',
+        email: user.email ? user.email : '',
+        firstAccess: +user.createdAt,
+        lastLogin: +user.lastLoginAt,
+      };
+      await addDoc(collection(db, collectionData), {
+        id: userData.id,
+        email: userData.email,
+        firstAccess: new Date(userData.firstAccess).toISOString(),
+        lastLogin: new Date(userData.lastLogin).toISOString(),
+        finishedAt: now.toISOString(),
+        programName: programName,
+        programDuration: programDuration,
+      });
     }
   }
 
@@ -173,6 +231,7 @@ export const AuthProvider: React.FunctionComponent<IProps> = ({ children }) => {
         forgotPassword,
         getPrograms,
         getLetters,
+        saveProgramSession,
       }}
     >
       {children}

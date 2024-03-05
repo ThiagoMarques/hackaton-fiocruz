@@ -27,6 +27,7 @@
     "expo-linear-gradient": "~12.7.2",
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.8.0",
+    "moment": "^2.30.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.50.1",

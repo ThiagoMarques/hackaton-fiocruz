@@ -10,7 +10,6 @@ import { pause, play } from '../../assets/icons/Icons';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
 import KeepAwake from 'react-native-keep-awake';
-
 import alphaSound from '../../assets/alpha.mp3';
 
 interface ScreenNavigationProp {
@@ -22,6 +21,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
   const programData = {
     cycles: authContext.programData.cycles,
     track: authContext.programData.track,
+    name: authContext.programData.name,
   }
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [animatedSequence, setAnimatedSequence] = useState<Animated.CompositeAnimation | null>(null);
@@ -144,8 +144,10 @@ export const TreinoPLay: React.FunctionComponent = () => {
       if ((currentRatio === 1) || (currentRatio === 0)) {
         if (currentRatio === 0) {
           setStage('Inspire');
+          // Vibration.vibrate(500);
         } else {
           setStage('Expire');
+          // Vibration.vibrate(500);
         }
       }
     };
@@ -190,6 +192,7 @@ export const TreinoPLay: React.FunctionComponent = () => {
 
   const handleFinishedTraining = async () => {
     handlePause();
+    authContext.saveProgramSession(programData.name, currentTime)
     try {
       navigate('Tabs');
     } catch (error: any) {
@@ -204,7 +207,6 @@ export const TreinoPLay: React.FunctionComponent = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <KeepAwake>
       <Container>
         <View
           style={{
@@ -297,8 +299,6 @@ export const TreinoPLay: React.FunctionComponent = () => {
           </InstructionsButton>
         </ContainerInstructions>
       </Container>
-      </KeepAwake>
-
     </SafeAreaView>
   );
 };
