@@ -12,8 +12,8 @@ import * as yup from 'yup';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { Button } from '../../components/Form/Button';
 import {
+  CardButton,
   Container,
   Content,
   CreateAccount,
@@ -22,6 +22,8 @@ import {
   ForgotPasswordTitle,
   Icon,
   Logo,
+  SignInButton,
+  SignInTitle,
   Title,
 } from './styles';
 import logo from '../../assets/logo.jpg';
@@ -43,7 +45,6 @@ const formSchema = yup.object({
 
 export const SignIn: React.FunctionComponent = () => {
   const authContext = useAuth();
-  console.log("🚀 ~ authContext:", authContext);
   const [loading, setLoading] = React.useState(false);
   const {
     handleSubmit,
@@ -61,8 +62,9 @@ export const SignIn: React.FunctionComponent = () => {
       password: form.password,
     };
     try {
-      // setLoading(true);
+      setLoading(true);
       authContext.signIn(data);
+      setLoading(false);
     } catch (error: any) {
       Alert.alert(
         'Erro na autenticação',
@@ -105,12 +107,16 @@ export const SignIn: React.FunctionComponent = () => {
               secureTextEntry
               error={errors.password && errors.password.message}
             />
-
-            <Button
-              title="Entrar"
-              disabled={loading || errors.email || errors.password}
-              onPress={handleSubmit(handleSignIn)}
-            />
+            <CardButton>
+              <SignInButton
+                disabled={loading || errors.email || errors.password}
+                onPress={handleSubmit(handleSignIn)}
+              >
+                <SignInTitle>
+                  {loading ? 'Carregando...' : 'Entrar'}
+                </SignInTitle>
+              </SignInButton>
+            </CardButton>
 
             <ForgotPasswordButton onPress={() => navigate('ForgotPassword')}>
               <ForgotPasswordTitle>Esqueci minha senha</ForgotPasswordTitle>

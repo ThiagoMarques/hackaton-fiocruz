@@ -2,9 +2,12 @@ import React from 'react';
 import {
   BackToolSignIn,
   BackToolSignInTitle,
+  CardButton,
   Container,
   Content,
   Icon,
+  SignInButton,
+  SignInTitle,
   Title,
 } from './styles';
 import {
@@ -21,7 +24,6 @@ import logo from '../../assets/logo.jpg';
 import { Logo } from '../SignIn/styles';
 import { InputControl } from '../../components/Form/InputControl';
 import { useForm } from 'react-hook-form';
-import { useState, useEffect } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -42,7 +44,6 @@ const formSchema = yup.object({
 
 export const SignUp: React.FunctionComponent = () => {
   const navigation = useNavigation<ScreenNavigationProp>();
-  const [user, setUser] = useState(null);
   const authContext = useAuth();
   const {
     handleSubmit,
@@ -60,7 +61,6 @@ export const SignUp: React.FunctionComponent = () => {
     };
     try {
       authContext.signUp(data);
-      console.log('Usuário criado!');
     } catch (error: any) {
       Alert.alert(
         'Erro ao criar usuário',
@@ -110,7 +110,11 @@ export const SignUp: React.FunctionComponent = () => {
               placeholder="Senha"
               error={errors.password && errors.password.message}
             />
-            <Button title="Criar conta" onPress={handleSubmit(handleSignUp)} />
+            <CardButton>
+              <SignInButton onPress={handleSubmit(handleSignUp)}>
+                <SignInTitle>Criar conta</SignInTitle>
+              </SignInButton>
+            </CardButton>
           </Content>
         </Container>
       </ScrollView>

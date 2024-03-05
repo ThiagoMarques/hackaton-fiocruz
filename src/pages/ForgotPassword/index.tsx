@@ -14,14 +14,15 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Button } from '../../components/Form/Button';
 import {
+  CardButton,
   Container,
   Content,
   CreateAccount,
   CreateAccountTitle,
-  ForgotPasswordButton,
-  ForgotPasswordTitle,
   Icon,
   Logo,
+  SignInButton,
+  SignInTitle,
   Title,
 } from './styles';
 import logo from '../../assets/logo.jpg';
@@ -41,11 +42,9 @@ const formSchema = yup.object({
   email: yup.string().email('Email inválido.').required('Informe o email.'),
 });
 
-
 export const ForgotPassword: React.FunctionComponent = () => {
   const authContext = useAuth();
-  const { goBack, navigate } = useNavigation<ScreenNavigationProp>();
-  const [loading, setLoading] = React.useState(false);
+  const { navigate } = useNavigation<ScreenNavigationProp>();
   const {
     handleSubmit,
     control,
@@ -95,21 +94,21 @@ export const ForgotPassword: React.FunctionComponent = () => {
               keyboardType="email-address"
               error={errors.email && errors.email.message}
             />
-            <Button
-              title="Enviar"
-              disabled={loading || errors.email || errors.password}
-              onPress={handleSubmit(handleForgotPassword)}
-            />
+            <CardButton>
+              <SignInButton onPress={handleSubmit(handleForgotPassword)}>
+                <SignInTitle>Criar conta</SignInTitle>
+              </SignInButton>
+            </CardButton>
           </Content>
         </Container>
       </ScrollView>
       <CreateAccount
         onPress={() => {
-          navigate('SignUp');
+          navigate('SignIn');
         }}
       >
-        <Icon name="log-in" />
-        <CreateAccountTitle>Criar uma conta</CreateAccountTitle>
+        <Icon name="arrow-left" />
+        <CreateAccountTitle>Voltar para login</CreateAccountTitle>
       </CreateAccount>
     </KeyboardAvoidingView>
   );

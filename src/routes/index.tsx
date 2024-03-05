@@ -4,7 +4,8 @@ import { AppRoutes } from './app.routes';
 import { useAuth } from '../context/AuthContext';
 
 export const Routes: React.FunctionComponent = () => {
-  const { user } = useAuth();
+  const { user, programData } = useAuth();
+  console.log('programData', programData);
   if (!user?.uid) {
     return <AuthRoutes />;
   }

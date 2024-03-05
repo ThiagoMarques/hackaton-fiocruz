@@ -1,25 +1,29 @@
 import React from 'react';
 import {
+  CardButton,
   Container,
   ContainerRegister,
   Content,
   Header,
   Icon,
   LogoutButton,
+  SignInButton,
+  SignInTitle,
   Title,
   UserInfo,
   UserWrapper,
 } from './styles';
 
 import { useAuth } from '../../context/AuthContext';
-import { Alert, ScrollView } from 'react-native';
+import { Alert, ScrollView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { InputControl } from '../../components/Form/InputControl';
-import { Button } from '../../components/Form/Button';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { updateProfile } from 'firebase/auth';
+import { Logo } from '../SignIn/styles';
+import logo from '../../assets/logo.jpg';
 
 interface IFormInputs {
   [name: string]: any;
@@ -81,6 +85,8 @@ export const Register: React.FunctionComponent = () => {
       >
         <ContainerRegister>
           <Content>
+            <Logo source={logo} />
+            <View></View>
             <Title>Edite os dados da sua conta</Title>
             <InputControl
               autoCorrect={false}
@@ -98,7 +104,11 @@ export const Register: React.FunctionComponent = () => {
               keyboardType="email-address"
               error={errors.name && errors.name.message}
             />
-            <Button onPress={handleSubmit(updateUserProfile)} title="Editar" />
+            <CardButton>
+              <SignInButton onPress={handleSubmit(updateUserProfile)}>
+                <SignInTitle>Entrar</SignInTitle>
+              </SignInButton>
+            </CardButton>
           </Content>
         </ContainerRegister>
       </ScrollView>
