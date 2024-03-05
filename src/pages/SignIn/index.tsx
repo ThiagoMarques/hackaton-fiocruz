@@ -112,7 +112,9 @@ export const SignIn: React.FunctionComponent = () => {
                 disabled={loading || errors.email || errors.password}
                 onPress={handleSubmit(handleSignIn)}
               >
-                <SignInTitle>{loading ? 'Carregando...' : 'Entrar'}</SignInTitle>
+                <SignInTitle>
+                  {loading ? 'Carregando...' : 'Entrar'}
+                </SignInTitle>
               </SignInButton>
             </CardButton>
 
