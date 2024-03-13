@@ -106,7 +106,7 @@ export const Register: React.FunctionComponent = () => {
             />
             <CardButton>
               <SignInButton onPress={handleSubmit(updateUserProfile)}>
-                <SignInTitle>Entrar</SignInTitle>
+                <SignInTitle>Editar dados</SignInTitle>
               </SignInButton>
             </CardButton>
           </Content>
