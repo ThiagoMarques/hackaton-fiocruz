@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "regularium",
-    "slug": "regularium",
+    "name": "acalmasus",
+    "slug": "acalmasus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,19 +15,26 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.thiagossmarques.acalmasus"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.thiagossmarques.acalmasus"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "02dd6c21-c56b-485b-bebb-67cbff0800cb"
+      }
+    }
   }
 }

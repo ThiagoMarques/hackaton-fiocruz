@@ -1,11 +1,11 @@
 {
-  "name": "regularium",
+  "name": "acalmasus",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
@@ -20,11 +20,13 @@
     "@react-navigation/native": "^6.1.10",
     "@react-navigation/native-stack": "^6.9.18",
     "@types/react": "~18.2.45",
-    "expo": "~50.0.7",
+    "expo": "~50.0.8",
     "expo-app-loading": "^2.1.1",
     "expo-av": "~13.10.5",
+    "expo-dev-client": "~3.3.9",
     "expo-font": "~11.10.3",
     "expo-linear-gradient": "~12.7.2",
+    "expo-splash-screen": "^0.26.4",
     "expo-status-bar": "~1.11.1",
     "firebase": "^10.8.0",
     "moment": "^2.30.1",
